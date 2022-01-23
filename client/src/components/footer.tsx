@@ -24,6 +24,10 @@ export default function Footer() {
           <ProfileIcon />
           Profile
         </MenuItem>
+        <MenuItem to="/todos">
+          <ProfileIcon />
+          Todos
+        </MenuItem>
         <LogoutButton />
       </InnerContainer>
     </Container>

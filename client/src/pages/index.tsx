@@ -6,6 +6,7 @@ import Launches from './launches';
 import Cart from './cart';
 import Profile from './profile';
 import { Footer, PageContainer } from '../components';
+import Todos from "./todos";
 
 export default function Pages() {
   return (
@@ -16,6 +17,7 @@ export default function Pages() {
           <Launch path="launch/:launchId" />
           <Cart path="cart" />
           <Profile path="profile" />
+          <Todos path="todos" />
         </Router>
       </PageContainer>
       <Footer />
