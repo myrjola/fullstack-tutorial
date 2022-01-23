@@ -23,13 +23,18 @@ const dataSources = () => ({
 const context = async ({ req }) => {
   // simple auth check on every request
   const auth = (req.headers && req.headers.authorization) || '';
+  console.log("auth: ", auth);
   const email = Buffer.from(auth, 'base64').toString('ascii');
+
+  console.log("email: ", email);
 
   // if the email isn't formatted validly, return null for user
   if (!isEmail.validate(email)) return { user: null };
   // find a user by their email
   const users = await store.users.findOrCreate({ where: { email } });
   const user = users && users[0] ? users[0] : null;
+
+  console.log("user: ", user);
 
   return { user };
 };
@@ -44,6 +49,31 @@ const server = new ApolloServer({
   apollo: {
     key: process.env.APOLLO_KEY,
   },
+  plugins: [
+    {
+      async requestDidStart(initialRequestContext) {
+        return {
+          async executionDidStart(executionRequestContext) {
+            return {
+              willResolveField({source, args, context, info}) {
+                const start = process.hrtime.bigint();
+                return (error, result) => {
+                  const end = process.hrtime.bigint();
+                  console.log(`Field ${info.parentType.name}.${info.fieldName} took ${end - start}ns`);
+                  if (error) {
+                    console.log(`It failed with ${error}`);
+                    console.log(error.stack);
+                  } else {
+                    console.log(`It returned ${result}`);
+                  }
+                };
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 });
 
 // Start our server if we're not in a test env.
