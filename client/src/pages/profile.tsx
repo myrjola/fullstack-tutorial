@@ -60,6 +60,11 @@ const Profile: React.FC<ProfileProps> = () => {
   return (
     <Fragment>
       <Header>User profile</Header>
+
+      <h2>User information</h2>
+      <div>
+        Email: {data.me?.email}
+      </div>
       <label>
         Name:
         <input disabled={formDisabled} onChange={e => setName(e.target.value)} value={name} />
