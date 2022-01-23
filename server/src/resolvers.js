@@ -70,6 +70,13 @@ module.exports = {
         return user;
       }
     },
+    updateUser: async (_, { name }, { dataSources }) => {
+      const user = await dataSources.userAPI.updateUser({ name });
+      if (user) {
+        user.token = Buffer.from(user.email).toString('base64');
+        return user;
+      }
+    },
   },
   Launch: {
     isBooked: async (launch, _, { dataSources }) =>

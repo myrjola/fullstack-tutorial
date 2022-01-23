@@ -24,6 +24,8 @@ const typeDefs = gql`
     cancelTrip(launchId: ID!): TripUpdateResponse!
 
     login(email: String): User
+    
+    updateUser(name: String): User
   }
 
   type TripUpdateResponse {
@@ -63,6 +65,7 @@ const typeDefs = gql`
     profileImage: String
     trips: [Launch]!
     token: String
+    name: String
   }
 
   type Mission {

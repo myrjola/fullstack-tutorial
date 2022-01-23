@@ -117,6 +117,14 @@ class UserAPI extends DataSource {
       profileImage: `https://${AWS_S3_BUCKET}.s3.us-west-2.amazonaws.com/${filename}`
     });
   }
+
+  async updateUser({ name }) {
+    const userId = this.context.user.id;
+    const user = await this.store.users.findByPk(userId);
+    user.name = name
+    user.save()
+    return user
+  }
 }
 
 module.exports = UserAPI;

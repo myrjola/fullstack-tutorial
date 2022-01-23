@@ -40,6 +40,7 @@ module.exports.createStore = () => {
     email: Sequelize.STRING,
     profileImage: Sequelize.STRING,
     token: Sequelize.STRING,
+    name: Sequelize.STRING,
   });
 
   const trips = db.define('trip', {
