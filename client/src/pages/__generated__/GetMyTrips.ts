@@ -31,6 +31,7 @@ export interface GetMyTrips_me {
   __typename: "User";
   id: string;
   email: string;
+  name: string | null;
   trips: (GetMyTrips_me_trips | null)[];
 }
 
