@@ -125,6 +125,33 @@ class UserAPI extends DataSource {
     user.save()
     return user
   }
+
+  async findAllTodos() {
+    const userId = this.context.user.id;
+    console.log(this.store)
+    return this.store.todos.findAll({ where: { userId }});
+  }
+
+  async insertTodo({ todo }) {
+    const userId = this.context.user.id;
+    return this.store.todos.create({ todo, userId});
+  }
+
+  async completeTodo({ id }) {
+    const userId = this.context.user.id;
+    const todo = await this.store.todos.findOne({ where: { id, userId }});
+    todo.done = true;
+    todo.save();
+    return todo;
+  }
+
+  async updateTodo({ id, todo }) {
+    const userId = this.context.user.id;
+    const todoInstance = await this.store.todos.findOne({ where: { id, userId }});
+    todoInstance.todo = true;
+    todoInstance.save();
+    return todo;
+  }
 }
 
 module.exports = UserAPI;

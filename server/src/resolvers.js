@@ -1,4 +1,5 @@
 const { paginateResults } = require('./utils');
+const {dataSources} = require("./index");
 
 module.exports = {
   Query: {
@@ -26,6 +27,9 @@ module.exports = {
     },
     launch: (_, { id }, { dataSources }) =>
       dataSources.launchAPI.getLaunchById({ launchId: id }),
+    todos: (_, __, { dataSources }) => {
+      return dataSources.userAPI.findAllTodos()
+    },
     me: async (_, __, { dataSources }) =>
       dataSources.userAPI.findOrCreateUser(),
   },
@@ -76,6 +80,15 @@ module.exports = {
         user.token = Buffer.from(user.email).toString('base64');
         return user;
       }
+    },
+    completeTodo: async (_, { id }, { dataSources }) => {
+      return dataSources.userAPI.completeTodo({ id });
+    },
+    insertTodo: async (_, { todo }, { dataSources }) => {
+      return dataSources.userAPI.insertTodo({ todo });
+    },
+    updateTodo: async (_, { id, todo }, { dataSources }) => {
+      return dataSources.userAPI.updateTodo({ id, todo });
     },
   },
   Launch: {

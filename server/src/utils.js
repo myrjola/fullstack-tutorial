@@ -50,5 +50,17 @@ module.exports.createStore = () => {
     userId: Sequelize.INTEGER,
   });
 
-  return { db, users, trips };
+  const todos = db.define('todo', {
+    createdAt: Sequelize.DATE,
+    updatedAt: Sequelize.DATE,
+    done: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    todo: Sequelize.STRING,
+    userId: Sequelize.INTEGER,
+  });
+
+  return { db, users, trips, todos };
 };

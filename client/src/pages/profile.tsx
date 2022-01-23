@@ -71,6 +71,13 @@ const Profile: React.FC<ProfileProps> = () => {
       </label>
       <button onClick={onSave} type="button" disabled={formDisabled}>{savingUser ? "Saving..." : "Save"}</button>
 
+      <h2>Todos</h2>
+      <label>
+        Add todo:
+        <input disabled={formDisabled} onChange={e => setName(e.target.value)} value={name} />
+      </label>
+      <button onClick={onSave} type="button" disabled={formDisabled}>{savingUser ? "Adding..." : "Add todo"}</button>
+
       <h2>My trips</h2>
       {data.me && data.me.trips.length ? (
         data.me.trips.map((launch: any) => (

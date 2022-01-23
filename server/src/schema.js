@@ -14,6 +14,7 @@ const typeDefs = gql`
     ): LaunchConnection!
     launch(id: ID!): Launch
     me: User
+    todos: [Todo!]!
   }
 
   type Mutation {
@@ -26,6 +27,12 @@ const typeDefs = gql`
     login(email: String): User
     
     updateUser(name: String): User
+    
+    completeTodo(id: ID!): Todo
+    
+    updateTodo(id: ID!, todo: String!): Todo
+    
+    insertTodo(todo: String!): Todo
   }
 
   type TripUpdateResponse {
@@ -76,6 +83,12 @@ const typeDefs = gql`
   enum PatchSize {
     SMALL
     LARGE
+  }
+  
+  type Todo {
+    id: ID!
+    todo: String
+    done: Boolean!
   }
 `;
 
