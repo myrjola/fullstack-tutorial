@@ -121,7 +121,7 @@ class UserAPI extends DataSource {
   async updateUser({ name }) {
     const userId = this.context.user.id;
     const user = await this.store.users.findByPk(userId);
-    user.name = name
+    user.name = name.trim()
     user.save()
     return user
   }
