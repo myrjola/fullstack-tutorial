@@ -55,7 +55,27 @@ const Todos: React.FC<TodosProps> = () => {
     } = useQuery(
         FIND_ALL_TODOS,
     );
-    const [insertTodo, {loading: insertingTodo}] = useMutation(INSERT_TODO);
+    const [insertTodo, {loading: insertingTodo}] = useMutation(INSERT_TODO, {
+        update(cache, { data: { insertTodo } }) {
+            cache.modify({
+                fields: {
+                    todos(existingTodos = []) {
+                        const newTodoRef = cache.writeFragment({
+                            data: insertTodo,
+                            fragment: gql`
+                                fragment NewTodo on Todo {
+                                    id
+                                    done
+                                    todo
+                                }
+                            `
+                        });
+                        return [newTodoRef, ...existingTodos];
+                    }
+                }
+            });
+        }
+    });
     const [updateTodo, {loading: updatingTodo}] = useMutation(INSERT_TODO);
     const [completeTodo, {loading: completingTodo}] = useMutation(COMPLETE_TODO);
     const [newTodo, setNewTodo] = useState("");
@@ -64,28 +84,32 @@ const Todos: React.FC<TodosProps> = () => {
     if (error) return <p>ERROR: {error.message}</p>;
     if (data === undefined) return <p>ERROR</p>;
 
-    const onAddTodo = async () => {
-        await insertTodo({ variables: { todo: newTodo} })
-        setNewTodo("")
+    const onAddTodo = async (e: any) => {
+        e.preventDefault();
+        await insertTodo({ variables: { todo: newTodo} });
+        setNewTodo("");
+        return true;
     }
 
     return (
         <Fragment>
             <Header>Todos</Header>
 
-            <label>
-                Add todo:
-                <input disabled={insertingTodo} onChange={e => setNewTodo(e.target.value)} value={newTodo}/>
-            </label>
-            <button onClick={onAddTodo} type="button"
-                    disabled={insertingTodo}>{insertingTodo ? "Adding..." : "Add todo"}</button>
+            <form onSubmit={onAddTodo}>
+                <label>
+                    Add todo:{' '}
+                    <input disabled={insertingTodo} onChange={e => setNewTodo(e.target.value)} value={newTodo}/>
+                </label>
+            </form>
 
             <h2>Todos</h2>
             {data?.todos?.length ? (
                 data?.todos?.map((todo: any) => (
-                    <div>
-                        <input type="checkbox" checked={todo.done} disabled={todo.done} onChange={() => completeTodo({variables: {id: todo.id}})}/>
-                        {todo.todo}
+                    <div key={todo.id}>
+                        <label>
+                            <input type="checkbox" checked={todo.done} disabled={todo.done} onChange={() => completeTodo({variables: {id: todo.id}})}/>
+                            {todo.todo}
+                        </label>
                     </div>
                 ))
             ) : (
