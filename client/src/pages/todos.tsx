@@ -3,6 +3,7 @@ import {gql, useMutation, useQuery} from '@apollo/client';
 
 import {Loading, Header} from '../components';
 import {RouteComponentProps} from '@reach/router';
+import Todo from "../containers/todo";
 
 export const FIND_ALL_TODOS = gql`
     query FindAllTodos {
@@ -24,26 +25,6 @@ export const INSERT_TODO = gql`
     }
 `;
 
-export const COMPLETE_TODO = gql`
-    mutation CompleteTodo($id: ID!) {
-        completeTodo(id: $id) {
-            id
-            todo
-            done
-        }
-    }
-`;
-
-export const UPDATE_TODO = gql`
-    mutation UpdateTodo($id: ID!, $todo: String!) {
-        updateTodo(id: $id, todo: $todo) {
-            id
-            todo
-            done
-        }
-    }
-`;
-
 interface TodosProps extends RouteComponentProps {
 }
 
@@ -56,7 +37,7 @@ const Todos: React.FC<TodosProps> = () => {
         FIND_ALL_TODOS,
     );
     const [insertTodo, {loading: insertingTodo}] = useMutation(INSERT_TODO, {
-        update(cache, { data: { insertTodo } }) {
+        update(cache, {data: {insertTodo}}) {
             cache.modify({
                 fields: {
                     todos(existingTodos = []) {
@@ -65,8 +46,6 @@ const Todos: React.FC<TodosProps> = () => {
                             fragment: gql`
                                 fragment NewTodo on Todo {
                                     id
-                                    done
-                                    todo
                                 }
                             `
                         });
@@ -76,8 +55,6 @@ const Todos: React.FC<TodosProps> = () => {
             });
         }
     });
-    const [updateTodo, {loading: updatingTodo}] = useMutation(INSERT_TODO);
-    const [completeTodo, {loading: completingTodo}] = useMutation(COMPLETE_TODO);
     const [newTodo, setNewTodo] = useState("");
 
     if (loading) return <Loading/>;
@@ -86,7 +63,7 @@ const Todos: React.FC<TodosProps> = () => {
 
     const onAddTodo = async (e: any) => {
         e.preventDefault();
-        await insertTodo({ variables: { todo: newTodo} });
+        await insertTodo({variables: {todo: newTodo}});
         setNewTodo("");
         return true;
     }
@@ -104,16 +81,9 @@ const Todos: React.FC<TodosProps> = () => {
 
             <h2>Todos</h2>
             {data?.todos?.length ? (
-                data?.todos?.map((todo: any) => (
-                    <div key={todo.id}>
-                        <label>
-                            <input type="checkbox" checked={todo.done} disabled={todo.done} onChange={() => completeTodo({variables: {id: todo.id}})}/>
-                            {todo.todo}
-                        </label>
-                    </div>
-                ))
+                data?.todos?.map((todo: any) => <Todo key={todo.id} todo={todo}/>)
             ) : (
-                <p>You haven't booked any trips</p>
+                <p>You haven't created any todos.</p>
             )}
         </Fragment>
     );

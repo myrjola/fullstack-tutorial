@@ -148,9 +148,9 @@ class UserAPI extends DataSource {
   async updateTodo({ id, todo }) {
     const userId = this.context.user.id;
     const todoInstance = await this.store.todos.findOne({ where: { id, userId }});
-    todoInstance.todo = true;
+    todoInstance.todo = todo;
     todoInstance.save();
-    return todo;
+    return todoInstance;
   }
 }
 
