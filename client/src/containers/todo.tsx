@@ -68,7 +68,7 @@ const Todo: FC<Props> = ({todo}) => {
         {isEditing ?
             <EditTodo todo={todo} onDone={() => setIsEditing(false)}/>
             :
-            <button onClick={() => setIsEditing(true)}>{todo.todo}</button>
+            <button disabled={todo.done} onClick={() => setIsEditing(true)}>{todo.todo}</button>
         }
     </div>)
 }

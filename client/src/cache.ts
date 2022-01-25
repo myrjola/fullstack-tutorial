@@ -1,4 +1,5 @@
 import { InMemoryCache, Reference, makeVar } from '@apollo/client';
+import { offsetLimitPagination } from "@apollo/client/utilities";
 
 export const cache: InMemoryCache = new InMemoryCache({
   typePolicies: {
@@ -14,6 +15,7 @@ export const cache: InMemoryCache = new InMemoryCache({
             return cartItemsVar();
           }
         },
+        todos: offsetLimitPagination(),
         launches: {
           keyArgs: false,
           merge(existing, incoming) {

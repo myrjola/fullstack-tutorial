@@ -6,8 +6,8 @@ import {RouteComponentProps} from '@reach/router';
 import Todo from "../containers/todo";
 
 export const FIND_ALL_TODOS = gql`
-    query FindAllTodos {
-        todos {
+    query FindAllTodos($offset: Int, $limit: Int) {
+        todos(offset: $offset, limit: $limit) {
             id
             todo
             done
@@ -32,9 +32,11 @@ const Todos: React.FC<TodosProps> = () => {
     const {
         data,
         loading,
-        error
+        error,
+        fetchMore
     } = useQuery(
         FIND_ALL_TODOS,
+        {variables: {offset: 0, limit: 5}}
     );
     const [insertTodo, {loading: insertingTodo}] = useMutation(INSERT_TODO, {
         update(cache, {data: {insertTodo}}) {
@@ -85,6 +87,11 @@ const Todos: React.FC<TodosProps> = () => {
             ) : (
                 <p>You haven't created any todos.</p>
             )}
+            <button onClick={() => fetchMore({
+                variables: {
+                    offset: data?.todos?.length
+                },
+            })}>Fetch more</button>
         </Fragment>
     );
 }

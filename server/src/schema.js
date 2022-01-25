@@ -14,7 +14,7 @@ const typeDefs = gql`
     ): LaunchConnection!
     launch(id: ID!): Launch
     me: User
-    todos: [Todo!]!
+    todos(offset: Int, limit: Int): [Todo!]!
   }
 
   type Mutation {

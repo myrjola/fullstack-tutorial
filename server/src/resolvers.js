@@ -27,8 +27,9 @@ module.exports = {
     },
     launch: (_, { id }, { dataSources }) =>
       dataSources.launchAPI.getLaunchById({ launchId: id }),
-    todos: (_, __, { dataSources }) => {
-      return dataSources.userAPI.findAllTodos()
+    todos: async(_, { offset = 0, limit = 5 }, { dataSources }) => {
+      const todos = await dataSources.userAPI.findAllTodos()
+      return todos.slice(offset, offset + limit)
     },
     me: async (_, __, { dataSources }) =>
       dataSources.userAPI.findOrCreateUser(),

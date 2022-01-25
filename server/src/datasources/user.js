@@ -128,8 +128,7 @@ class UserAPI extends DataSource {
 
   async findAllTodos() {
     const userId = this.context.user.id;
-    console.log(this.store)
-    return this.store.todos.findAll({ where: { userId }});
+    return this.store.todos.findAll({ where: { userId }, order: [["createdAt", "DESC"]]});
   }
 
   async insertTodo({ todo }) {
