@@ -7,11 +7,17 @@ Based on [Apollo tutorial](http://apollographql.com/docs/tutorial/introduction.h
 To run the app, run these commands in two separate terminal windows from the root:
 
 ```bash
-cd final/server && npm i && npm start
+nvm use
+cd server
+npm install
+npm start
 ```
 
 and
 
 ```bash
-cd final/client && npm i && npm start
+nvm use
+cd client
+npm install
+npm start
 ```
