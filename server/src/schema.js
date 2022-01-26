@@ -1,6 +1,8 @@
 const { gql } = require('apollo-server');
 
 const typeDefs = gql`
+  directive @client on FIELD 
+    
   type Query {
     launches(
       """

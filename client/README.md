@@ -1,10 +1,10 @@
 # Apollo Fullstack Tutorial Client
 
-## Codegen
+## Typescript code generation
 
-Start the server and then fetch the schema and run codegen.
+Start the server so that you can fetch the schema for codegen.
 
 ```
-npm run update-schema
 npm run codegen
 ```
+

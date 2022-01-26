@@ -1,15 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: addOrRemoveFromCart
+// GraphQL fragment: NewTodo
 // ====================================================
 
-export interface addOrRemoveFromCart {
-  addOrRemoveFromCart: string[];
-}
-
-export interface addOrRemoveFromCartVariables {
-  launchId: string;
+export interface NewTodo {
+  __typename: "Todo";
+  id: string;
 }

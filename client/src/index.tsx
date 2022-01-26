@@ -13,6 +13,13 @@ import Login from './pages/login';
 import injectStyles from './styles';
 import { cache } from './cache';
 
+const typeDefs = gql`
+  extend type Query {
+    isLoggedIn: Boolean!
+    cartItems: [ID!]!
+  }
+`
+
 // Set up our apollo-client to point at the server we created
 // this can be local or a remote endpoint
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
@@ -23,6 +30,7 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     'client-name': 'Space Explorer [web]',
     'client-version': '1.0.0',
   },
+  typeDefs,
   resolvers: {},
 });
 
