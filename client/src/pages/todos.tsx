@@ -68,7 +68,7 @@ const Todos: React.FC<TodosProps> = () => {
 
     const onAddTodo = async (e: any) => {
         e.preventDefault();
-        await insertTodo({
+        insertTodo({
             variables: {todo: newTodo},
             optimisticResponse: {
                 insertTodo: {
@@ -90,7 +90,7 @@ const Todos: React.FC<TodosProps> = () => {
             <form onSubmit={onAddTodo}>
                 <label>
                     Add todo:{' '}
-                    <input disabled={insertingTodo} onChange={e => setNewTodo(e.target.value)} value={newTodo}/>
+                    <input onChange={e => setNewTodo(e.target.value)} value={newTodo}/>
                 </label>
             </form>
 
