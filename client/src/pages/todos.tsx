@@ -36,7 +36,10 @@ const Todos: React.FC<TodosProps> = () => {
         fetchMore
     } = useQuery(
         FIND_ALL_TODOS,
-        {variables: {offset: 0, limit: 5}}
+        {
+            variables: {offset: 0, limit: 5},
+            notifyOnNetworkStatusChange: true
+        }
     );
     const [insertTodo, {loading: insertingTodo}] = useMutation(INSERT_TODO, {
         update(cache, {data: {insertTodo}}) {
@@ -59,7 +62,7 @@ const Todos: React.FC<TodosProps> = () => {
     });
     const [newTodo, setNewTodo] = useState("");
 
-    if (loading) return <Loading/>;
+    if (loading && !data) return <Loading/>;
     if (error) return <p>ERROR: {error.message}</p>;
     if (data === undefined) return <p>ERROR</p>;
 
@@ -97,11 +100,11 @@ const Todos: React.FC<TodosProps> = () => {
             ) : (
                 <p>You haven't created any todos.</p>
             )}
-            <button onClick={() => fetchMore({
+            {loading ? <Loading /> : <button onClick={() => fetchMore({
                 variables: {
                     offset: data?.todos?.length
                 },
-            })}>Fetch more</button>
+            })}>Fetch more</button>}
         </Fragment>
     );
 }
