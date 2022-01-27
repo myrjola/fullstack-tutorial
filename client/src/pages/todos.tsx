@@ -65,7 +65,17 @@ const Todos: React.FC<TodosProps> = () => {
 
     const onAddTodo = async (e: any) => {
         e.preventDefault();
-        await insertTodo({variables: {todo: newTodo}});
+        await insertTodo({
+            variables: {todo: newTodo},
+            optimisticResponse: {
+                insertTodo: {
+                    __typename: 'Todo',
+                    id: 'temp-id',
+                    todo: newTodo,
+                    done: false,
+                }
+            }
+        });
         setNewTodo("");
         return true;
     }

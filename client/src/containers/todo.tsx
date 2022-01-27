@@ -34,10 +34,18 @@ const EditTodo: FC<Props & { onDone: () => void }> = ({todo, onDone}) => {
     const ref = useRef<HTMLInputElement>(null)
 
     const onUpdate = async () => {
-        await updateTodo({
+        updateTodo({
             variables: {
                 id: todo.id,
                 todo: ref.current?.value
+            },
+            optimisticResponse: {
+                updateTodo: {
+                    __typename: 'Todo',
+                    id: todo.id,
+                    todo: ref.current?.value,
+                    done: todo.done
+                }
             }
         })
         onDone()
